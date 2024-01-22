@@ -6,6 +6,7 @@ import tkinter as tk
 import tkinter.messagebox as messagebox
 
 
+# 実行ボタンが押されたときの動作
 def run_button():
     # 初期化
     output_tel.configure(state = "normal")
@@ -21,34 +22,37 @@ def run_button():
     
     input_tel = re.sub(r"\D", "", unicodedata.normalize("NFKC", str))
     if len(input_tel) == 10 or len(input_tel) == 11:
+        # リスト内を検索
         list_search = list(filter(lambda item : item["no"] == input_tel[:4], subfile_other.list_other1))
-        if len(list_search) != 0: # リストが空ではない場合
+        if len(list_search) != 0: # リスト内検索でヒットした場合
             dict_search = list_search[0]
             if len(input_tel) == dict_search["digits_total"]:
+                # 出力結果用テキストボックスに出力
                 output_tel.insert(0, dict_search["no"] + "-" + input_tel[dict_search["digits_1st"]:dict_search["digits_1st"] + dict_search["digits_2nd"]] + "-" + input_tel[-1 * dict_search["digits_3rd"]:])
                 output_type.insert(0, dict_search["type"])
-                #input_box.delete(0, tk.END)
             else:
                 errmsg("桁数不一致のためエラーが発生しました。")
         else:
+            # リスト内を検索
             list_search = list(filter(lambda item : item["no"] == input_tel[:3], subfile_other.list_other2))
-            if len(list_search) != 0: # リストが空ではない場合
+            if len(list_search) != 0: # リスト内検索でヒットした場合
                 dict_search = list_search[0]
                 if len(input_tel) == dict_search["digits_total"]:
+                    # 出力結果用テキストボックスに出力
                     output_tel.insert(0, dict_search["no"] + "-" + input_tel[dict_search["digits_1st"] :dict_search["digits_1st"] + dict_search["digits_2nd"]] + "-" + input_tel[-1 * dict_search["digits_3rd"]:])
                     output_type.insert(0, dict_search["type"])
-                    #input_box.delete(0, tk.END)
                 else:
                     errmsg("桁数不一致のためエラーが発生しました。")
             else:
+                # リスト内を検索
                 list_search = list(filter(lambda item : item["no"] == input_tel[:6], subfile_city.list_city))
-                if len(list_search) != 0: # リストが空ではない場合
+                if len(list_search) != 0: # リスト内検索でヒットした場合
                     dict_search = list_search[0]
+                    # 出力結果用テキストボックスに出力
                     output_tel.insert(0, dict_search["area_code"] + "-" + dict_search["city_code"] + "-" + input_tel[-4:])
                     output_type.insert(0, "固定電話")
                     output_pref.insert(0, dict_search["pref"])
                     output_area.insert(0,  dict_search["ma"])
-                    #input_box.delete(0, tk.END)
                 else:
                     errmsg("無効な電話番号です。")
     elif len(str) == 0:
@@ -56,6 +60,7 @@ def run_button():
     else:
         errmsg("桁数不一致のためエラーが発生しました。")
     
+    # 出力結果用テキストボックスは読取専用(コピーは可能)
     output_tel.configure(state = "readonly")
     output_type.configure(state = "readonly")
     output_pref.configure(state = "readonly")
